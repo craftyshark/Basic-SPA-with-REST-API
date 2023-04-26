@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Search</title>
+  <script>
+    function searchUsers() {
+      const firstName = document.getElementById('firstName').value;
+
+      // Make an AJAX request to the server to search for users with the given first name
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', `/search?firstName=${firstName}`, true);
+      xhr.onload = function() {
+        if (this.status === 200) {
+          const users = JSON.parse(this.responseText);
+          displayUsers(users);
+        }
+      };
+      xhr.send();
+    }
+
+    function displayUsers(users) {
+        const resultDiv = document.getElementById('results');
+        resultDiv.innerHTML = '';
+      
+        users.forEach(user => {
+          const userDiv = document.createElement('div');
+          userDiv.innerHTML = `
+            <h3>${user.firstName} ${user.lastName}</h3>
+            <p>Maiden Name: ${user.maidenName}</p>
+            <p>Age: ${user.age}</p>
+            <p>Gender: ${user.gender}</p>
+            <p>Email: ${user.email}</p>
+            <p>Phone: ${user.phone}</p>
+            <p>Username: ${user.username}</p>
+            <p>Password: ${user.password}</p>
+            <p>Birth Date: ${user.birthDate}</p>
+            <img src="${user.image}" alt="User image">
+            <p>Blood Group: ${user.bloodGroup}</p>
+            <p>Height: ${user.height}</p>
+            <p>Weight: ${user.weight}</p>
+            <p>Eye Color: ${user.eyeColor}</p>
+            <p>Hair Color: ${user.hair.color}</p>
+            <p>Hair Type: ${user.hair.type}</p>
+            <p>Domain: ${user.domain}</p>
+            <p>IP: ${user.ip}</p>
+            <p>Address: ${user.address.address}, ${user.address.city}, ${user.address.state}, ${user.address.postalCode}</p>
+            <p>Coordinates: (${user.address.coordinates.lat}, ${user.address.coordinates.lng})</p>
+            <p>Mac Address: ${user.macAddress}</p>
+            <p>University: ${user.university}</p>
+            <p>Bank: ${user.bank.name} - Card Type: ${user.bank.cardType}, Card Number: ${user.bank.cardNumber}, Card Expire: ${user.bank.cardExpire}, Currency: ${user.bank.currency}, IBAN: ${user.bank.iban}</p>
+            <p>Company: ${user.company.name}, Department: ${user.company.department}, Title: ${user.company.title}, Address: ${user.company.address.address}, ${user.company.address.city}, ${user.company.address.state}, ${user.company.address.postalCode}</p>
+            <p>EIN: ${user.ein}</p>
+            <p>SSN: ${user.ssn}</p>
+            <p>User Agent: ${user.userAgent}</p>
+            <hr>
+          `;
+          resultDiv.appendChild(userDiv);
+        });
+      }
+      
+  </script>
+</head>
+<body>
+  <h1>User Search</h1>
+  <input type="text" id="firstName" placeholder="First Name">
+  <button onclick="searchUsers()">Search</button>
+  <div id="results"></div>
+</body>
+</html>
